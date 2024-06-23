@@ -1,4 +1,6 @@
 import { program } from "commander";
+import { addContact, getContactById, listContacts, removeContact } from "./contacts";
+
 program
   .option("-a, --action <type>", "choose action")
   .option("-i, --id <type>", "user id")
@@ -10,23 +12,49 @@ program.parse();
 
 const options = program.opts();
 
-// TODO: рефакторити
 async function invokeAction({ action, id, name, email, phone }) {
   switch (action) {
     case "list":
-      // ...
+      const contacts = await listContacts();
+      console.table(contacts);
       break;
 
     case "get":
-      // ... id
+      if (!id) {
+        console.log('Please, write ID-contact');
+        return;
+      }
+      const contact = await getContactById(id);
+      if (contact) {
+        console.log(contact);
+      } else {
+        console.log('Contact not found');
+      }
       break;
 
     case "add":
-      // ... name email phone
+      if (!name || !email || !phone) {
+        console.log(
+          "Please, write name? email and phone contact"
+        );
+        return;
+      }
+      const newContact = await addContact(name, email, phone);
+      console.log('Added contact:', newContact);
       break;
 
     case "remove":
-      // ... id
+      if (!id) {
+        console.log('Please, write ID-contact');
+        return;
+      }
+      const removedContact = await removeContact(id);
+      if (removedContact) {
+        console.table(removedContact);
+      } else {
+        console.log('Контакт з таким ID не знайдено');
+      }
+
       break;
 
     default:

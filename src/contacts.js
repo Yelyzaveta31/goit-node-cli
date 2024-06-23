@@ -1,23 +1,72 @@
-// contacts.js
-
-/*
- * Розкоментуй і запиши значення
- * const contactsPath = ;
- */
+import path from "node:path";
+import fs from "node:fs/promises";
+ 
+ const contactsPath = path.join(process.cwd(),"src", "db", "contacts.json");
+console.log(contactsPath);
+// const contactsPath = path.join(__dirname, 'contacts.json');
 
 async function listContacts() {
-    // ...твій код. Повертає масив контактів.
+try {
+  const data = await fs.readFile(contactsPath, "utf-8");
+  return JSON.parse(data);
+}
+catch(error) {
+  console.error( 'Error contacts', error.message);
+  return [];
+}
   }
   
   async function getContactById(contactId) {
-    // ...твій код. Повертає об'єкт контакту з таким id. Повертає null, якщо контакт з таким id не знайдений.
+    try{
+      const contacts = await listContacts();
+      const contact = contacts.filter(el => el.id === contactId) || null;
+return contact;
+    }
+    catch(error) {
+      console.error( 'Error contacts', error.message);
+      return null;
+    }
   }
   
   async function removeContact(contactId) {
-    // ...твій код. Повертає об'єкт видаленого контакту. Повертає null, якщо контакт з таким id не знайдений.
+    try{
+    const contacts = await listContacts();
+    const contactIndex = contacts.findIndex(contact => contact.id === contactId); 
+  if(contactIndex === -1) {
+    return null;
   }
+  const [removeContact] = contacts.splice(contactIndex, 1);
+  await fs.writeFile(contactsPath, JSON.stringify(contacts, null, 2));
+        return removeContact;
+  }
+  catch(error)
+  {
+    console.error( 'Error contacts', error.message);
+    return null;
+  }
+}
+
   
   async function addContact(name, email, phone) {
-    // ...твій код. Повертає об'єкт доданого контакту (з id).
+   try{
+    const contacts = await listContacts();
+    const newContact = {
+      id: (contacts.length > 0 ? parseInt(contacts[contacts.length - 1].id)+ 1 : 1).toString(),
+      name,
+      email,
+      phone
+  };
+  contacts.push(newContact);
+  await fs.writeFile(contactsPath, JSON.stringify(contacts, null, 2));
+  return newContact;
+}
+catch(error) {
+  console.error( 'Error contacts', error.message);
+  return null;
+}
   }
+
   
+export {
+    listContacts, getContactById, removeContact, addContact
+  };
