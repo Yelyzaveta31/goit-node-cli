@@ -1,5 +1,5 @@
-import { program } from "commander";
-import { addContact, getContactById, listContacts, removeContact } from "./src/contacts.js";
+import { program } from 'commander';
+import { listContacts, getContactById, removeContact, addContact } from './contacts.js';
 
 program
   .option("-a, --action <type>", "choose action")
@@ -14,13 +14,13 @@ const options = program.opts();
 
 async function invokeAction({ action, id, name, email, phone }) {
   switch (action) {
-    case "list": {
+    case "list": 
       const contacts = await listContacts();
       console.table(contacts);
       break;
-    }
+    
 
-    case "get": {
+    case "get": 
       if (!id) {
         console.log('Please, write ID-contact');
         return;
@@ -31,9 +31,9 @@ async function invokeAction({ action, id, name, email, phone }) {
       } else {
         console.log('Contact not found');
       }
-      break;}
+      break;
 
-    case "add":{
+    case "add":
       if (!name || !email || !phone) {
         console.log(
           "Please, write name? email and phone contact"
@@ -42,21 +42,21 @@ async function invokeAction({ action, id, name, email, phone }) {
       }
       const newContact = await addContact(name, email, phone);
       console.log('Added contact:', newContact);
-      break;}
+      break;
 
-    case "remove":{
+    case "remove":
       if (!id) {
         console.log('Please, write ID-contact');
         return;
       }
       const removedContact = await removeContact(id);
       if (removedContact) {
-        console.table(removedContact);
+        console.log(removedContact);
       } else {
-        console.log('Контакт з таким ID не знайдено');
+        console.log('Not found contact');
       }
 
-      break;}
+      break;
 
     default:
       console.warn("\x1B[31m Unknown action type!");

@@ -6,9 +6,7 @@
   "type": "module",
   "scripts": {
     "lint": "eslint src/**/*.js",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node src/index",
-    "dev": "nodemon src/index"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Yelyzaveta Didenko <Didenkoelizabeth@gmail.com>",
   "license": "ISC",
@@ -16,9 +14,11 @@
     "commander": "^12.1.0"
   },
   "devDependencies": {
+    "@eslint/eslintrc": "^3.1.0",
     "@eslint/js": "^9.5.0",
     "@faker-js/faker": "^8.4.1",
     "eslint": "^9.5.0",
+    "eslint-plugin-node": "^11.1.0",
     "globals": "^15.6.0",
     "nodemon": "^3.1.4"
   }
