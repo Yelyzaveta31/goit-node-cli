@@ -2,7 +2,7 @@ import path from "node:path";
 import fs from "node:fs/promises";
 
 
- const contactsPath = path.join(process.cwd(),"src", "db", "contacts.json");
+ const contactsPath = path.join(process.cwd(), "db", "contacts.json");
 console.log(contactsPath);
 // const contactsPath = path.join(__dirname, 'contacts.json');
 
